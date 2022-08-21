@@ -1,0 +1,7 @@
+{
+  "jest.jestCommandLine": "jest -w",
+  "editor.wordWrapColumn": 100,
+  "prettier.printWidth": 100,
+  "editor.wordWrap": "off",
+  "editor.formatOnSave": true
+}

@@ -1,0 +1,10 @@
+{
+  "jest.jestCommandLine": "npx jest -w",
+  "editor.wordWrapColumn": 100,
+  "prettier.printWidth": 100,
+  "editor.wordWrap": "off",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["typescript", "javascript"]
+}
