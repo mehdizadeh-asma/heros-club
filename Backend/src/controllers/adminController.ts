@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { RequestHandler } from "express";
 import { Types } from "mongoose";
 
 import Field from "../models/Field";
@@ -8,8 +8,9 @@ class adminController {
     try {
       const title = req.body.Title;
       const imageUrl = req.body.ImageUrl;
+      const status = req.body.Status;
 
-      const field = new Field({ Title: title, ImageUrl: imageUrl });
+      const field = new Field({ Title: title, ImageUrl: imageUrl, Status: status });
       await field.save();
       res.status(201).json(field);
     } catch (error) {
@@ -43,7 +44,7 @@ class adminController {
       const title: string = req.body.Title;
       const imageUrl: string = req.body.ImageUrl;
 
-      const result = await Field.findByIdAndUpdate(id, {Title:title, ImageUrl:imageUrl});
+      const result = await Field.findByIdAndUpdate(id, { Title: title, ImageUrl: imageUrl });
       res.status(200).json(result);
     } catch (error) {
       next(error);
