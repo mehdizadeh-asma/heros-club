@@ -43,9 +43,12 @@ class adminController {
 
       const title: string = req.body.Title;
       const imageUrl: string = req.body.ImageUrl;
+      const status = req.body.Status;
 
-      const result = await Field.findByIdAndUpdate(id, { Title: title, ImageUrl: imageUrl });
-      res.status(200).json(result);
+      const field = new Field({ _id: id, Title: title, ImageUrl: imageUrl, Status: status });
+
+      await Field.updateOne({ _id: id }, { Title: title, ImageUrl: imageUrl, Status: status });
+      res.status(200).json(field);
     } catch (error) {
       next(error);
     }
