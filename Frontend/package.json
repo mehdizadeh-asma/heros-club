@@ -5,20 +5,43 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --watch",
-    "test:ci": "jest --ci"
+    "test:ci": "jest --ci",
+    "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@reduxjs/toolkit": "^1.8.5",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "multiparty": "^4.2.3",
     "next": "latest",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-bootstrap": "^2.5.0",
+    "react-bootstrap-maskedinput": "^0.5.0",
+    "react-dom": "^18.1.0",
+    "react-image-file-resizer": "^0.4.8",
+    "react-multi-carousel": "^2.8.2",
+    "react-redux": "^8.0.2"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.2.5",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "13.2.0",
     "@testing-library/user-event": "14.2.0",
+    "@types/jest": "^28.1.8",
+    "@types/multiparty": "^0.0.33",
     "@types/react": "18.0.9",
-    "jest": "28.1.0",
+    "@types/react-bootstrap": "^0.32.30",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "eslint": "^8.22.0",
+    "eslint-config-next": "^12.2.5",
+    "eslint-plugin-jest-dom": "^4.0.2",
+    "eslint-plugin-testing-library": "^5.6.0",
+    "jest": "^28.1.0",
     "jest-environment-jsdom": "28.1.0",
+    "ts-jest": "^28.0.8",
     "typescript": "4.6.4"
   }
 }

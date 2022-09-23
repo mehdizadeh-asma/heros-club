@@ -20,21 +20,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use(
-  (
-    err: ErrorRequestHandler,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    console.log(err);
-    if (res.headersSent) {
-      return next(err);
-    }
-    res.status(500);
-    res.json({ error: err });
+app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+  console.log(err);
+  if (res.headersSent) {
+    return next(err);
   }
-);
+  res.status(500);
+  res.json({ error: err });
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "ok" });
@@ -46,8 +39,8 @@ mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING ?? "")
   .then(() => {
     app.listen(process.env.PORT);
-    console.log("Server is Startig at http://localhost:" + process.env.PORT);
+    console.log(`Server is Startig at http://localhost:${process.env.PORT ?? ""}`);
   })
-  .catch((err) => {
-    console.log("MongoDb Connection : " + err);
+  .catch((err: Error) => {
+    console.log(`MongoDb Connection :  ${err.message}`);
   });

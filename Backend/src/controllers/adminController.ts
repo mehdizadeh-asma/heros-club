@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
 
 import Field from "../models/Field";
@@ -6,11 +6,14 @@ import Field from "../models/Field";
 class adminController {
   static postField: RequestHandler = async (req, res, next) => {
     try {
-      const title = req.body.Title;
-      const imageUrl = req.body.ImageUrl;
-      const status = req.body.Status;
+      const { Title, ImageUrl, Status } = req.body as {
+        Title: string | undefined;
+        ImageUrl: string | undefined;
+        Status: string | undefined;
+      };
 
-      const field = new Field({ Title: title, ImageUrl: imageUrl, Status: status });
+      const field = new Field({ Title, ImageUrl, Status });
+
       await field.save();
       res.status(201).json(field);
     } catch (error) {
@@ -37,15 +40,20 @@ class adminController {
     }
   };
 
-  static putField: RequestHandler = async (req, res, next) => {
+  static putField = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id: string = req.params.id;
 
-      const title: string = req.body.Title;
-      const imageUrl: string = req.body.ImageUrl;
+      const { Title, ImageUrl, Status } = req.body as {
+        Title: string | undefined;
+        ImageUrl: string | undefined;
+        Status: string | undefined;
+      };
 
-      const result = await Field.findByIdAndUpdate(id, { Title: title, ImageUrl: imageUrl });
-      res.status(200).json(result);
+      const field = new Field({ _id: id, Title, ImageUrl, Status });
+
+      await Field.updateOne({ _id: id }, { Title, ImageUrl, Status });
+      res.status(200).json(field);
     } catch (error) {
       next(error);
     }
