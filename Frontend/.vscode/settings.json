@@ -1,3 +1,10 @@
 {
-    "jest.jestCommandLine": "jest -w"
+  "jest.jestCommandLine": "npx jest -w",
+  "editor.wordWrapColumn": 100,
+  "prettier.printWidth": 100,
+  "editor.wordWrap": "off",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
