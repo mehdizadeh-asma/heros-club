@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders admin unchanged 1`] = `
+<div>
+  <div>
+    <main>
+      <div
+        class="container pt-0 m bg-dark text-white"
+      />
+    </main>
+    <footer
+      class="footer"
+    />
+  </div>
+</div>
+`;
+
+exports[`renders homepage unchanged 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <main>
+      <a
+        href="/admin"
+      >
+        go to admin dashborad
+      </a>
+    </main>
+    <footer
+      class="footer"
+    />
+  </div>
+</div>
+`;
