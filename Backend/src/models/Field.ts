@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  Title: { type: String, required: true },
+  Title: { type: String, required: [true, "Title is required"] },
 
   ImageUrl: String,
 
   Status: {
     type: String,
-    enum: ["Active", "Deactive"],
+    enum: { values: ["Active", "Deactive"], message: "{VALUE} is not supported" },
     default: "Active",
   },
 });

@@ -30,17 +30,22 @@ app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFuncti
 });
 
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ message: "ok" });
+  res.status(200).json({ message: "app is running" });
 });
 
 app.use("/admin", adminRouter);
 
-mongoose
-  .connect(process.env.MONGODB_CONNECTION_STRING ?? "")
-  .then(() => {
-    app.listen(process.env.PORT);
-    console.log(`Server is Startig at http://localhost:${process.env.PORT ?? ""}`);
-  })
-  .catch((err: Error) => {
-    console.log(`MongoDb Connection :  ${err.message}`);
-  });
+if (process.env.MONGODB_CONNECTION_STRING)
+  mongoose
+    .connect(process.env.MONGODB_CONNECTION_STRING)
+    .then(() => {
+      if (process.env.PORT) {
+        app.listen(process.env.PORT);
+
+        console.log(`Server is Startig at http://localhost:${process.env.PORT}`);
+      } else console.log("PortNumber not found!");
+    })
+    .catch((err: Error) => {
+      console.log(`MongoDb Connection :  ${err.message}`);
+    });
+else console.log("Connection String not found!");

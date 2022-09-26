@@ -16,6 +16,7 @@ router.put("/field/:id", adminController.putField);
 router.delete("/field/:id", adminController.deleteField);
 //#endregion
 
+//#region Event Routes
 router.post("/event", adminController.postEvent);
 
 router.get("/events", adminController.getEvents);
@@ -25,4 +26,6 @@ router.get("/event/:id", adminController.getEvent);
 router.put("/event/:id", adminController.putEvent);
 
 router.delete("/event/:id", adminController.deleteEvent);
+//#endregion
+
 export default router;

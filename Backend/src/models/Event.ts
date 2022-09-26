@@ -1,15 +1,29 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  Title: { type: String, required: true },
+  Title: { type: String, required: [true, "Title is required"] },
 
-  Field: { type: mongoose.Schema.Types.ObjectId, ref: "Field", require: true },
+  Field: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Field",
+    require: [true, "Field Document is required"],
+  },
 
-  Date: { type: Date, require: true },
+  Date: { type: Date, require: [true, "Date is required"] },
 
-  Place: { type: Geolocation },
+  Place: {
+    Type: {
+      type: String,
+      enum: ["Point"],
+      required: [true, "Place.Type is required"],
+    },
+    Coordinates: {
+      type: [Number],
+      required: [true, "Place.Coordinates is required"],
+    },
+  },
 
-  Address: { type: String, require: true },
+  Address: { type: String, require: [true, "Address is required"] },
 
   ImageUrl: String,
 

@@ -40,6 +40,8 @@ class adminController {
 
       const field = await Field.findOne({ _id: new Types.ObjectId(id) });
 
+      if (!field) throw new Error("Field not found!");
+
       res.status(200).json(field);
     } catch (error) {
       next(error);
@@ -58,6 +60,10 @@ class adminController {
 
       const field = new Field({ _id: id, Title, ImageUrl, Status });
 
+      const error = field.validateSync();
+
+      if (error) throw new Error(error.message);
+
       await Field.updateOne({ _id: id }, { Title, ImageUrl, Status });
       res.status(200).json(field);
     } catch (error) {
@@ -69,15 +75,16 @@ class adminController {
     try {
       const id: string = req.params.id;
 
-      const field = await Field.deleteOne({ _id: new Types.ObjectId(id) });
+      const result = await Field.deleteOne({ _id: new Types.ObjectId(id) });
 
-      res.status(200).json(field);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
   };
   //#endregion
 
+  //#region Event CRUD
   static postEvent: RequestHandler = async (req, res, next) => {
     try {
       const { Title, Date, Place, Address, ImageUrl, Status, Cost } = req.body as {
@@ -90,7 +97,11 @@ class adminController {
         Cost: number | undefined;
       };
 
-      const field = req.body.Field as typeof Field;
+      const field = Field.hydrate(req.body.Field);
+
+      const error = field.validateSync();
+
+      if (error) throw new Error(error.message);
 
       const event = new Event({ Title, field, Date, Place, Address, ImageUrl, Status, Cost });
 
@@ -118,6 +129,8 @@ class adminController {
 
       const event = await Event.findOne({ _id: new Types.ObjectId(id) });
 
+      if (!event) throw new Error("Field not found!");
+
       res.status(200).json(event);
     } catch (error) {
       next(error);
@@ -138,7 +151,11 @@ class adminController {
         Cost: number | undefined;
       };
 
-      const field = req.body.Field as typeof Field;
+      const field = Field.hydrate(req.body.Field);
+
+      let error = field.validateSync();
+
+      if (error) throw new Error(error.message);
 
       const event = new Event({
         _id: id,
@@ -151,6 +168,10 @@ class adminController {
         Status,
         Cost,
       });
+
+      error = event.validateSync();
+
+      if (error) throw new Error(error.message);
 
       await Event.updateOne(
         { _id: id },
@@ -166,13 +187,14 @@ class adminController {
     try {
       const id: string = req.params.id;
 
-      const event = await Event.deleteOne({ _id: new Types.ObjectId(id) });
+      const result = await Event.deleteOne({ _id: new Types.ObjectId(id) });
 
-      res.status(200).json(event);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
   };
+  //#endregion
 }
 
 export default adminController;
