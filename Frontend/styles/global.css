@@ -101,7 +101,24 @@ code {
   width: 2.2rem;
   height: 2.2rem;
 }
-
+.roundImgBtnBorderWhite {
+  width: 38px;
+  height: 38px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  text-align: center;
+  padding: 3px 3px;
+  color: white;
+  /* vertical-align: top; */
+  /* padding: 2px; */
+  box-shadow: 2px 2px 6px #c0c0c0;
+  transition: 0.5s;
+  transition-timing-function: ease;
+}
+.roundImgBtnBorderWhite:hover {
+  box-shadow: 2px 2px 3px #f7f7f7;
+  border: 3px solid #f1f1f1;
+}
 .componentbtn {
   background-color: white;
   transition: 0.2s;
@@ -151,13 +168,13 @@ code {
 }
 .h100 {
   height: 500px;
-  background-color: rgb(173, 173, 170);
+  /* background-color: rgb(173, 173, 170); */
 }
 
 /* #region Card */
 .cardbody {
   width: 17rem;
-  height: 25rem;
+  height: 23rem;
 }
 .cardbodyField {
   width: 10rem;
@@ -172,20 +189,25 @@ code {
 }
 .eventTitle {
   font-family: "Segoe UI";
-  font-size: 23px;
+  /* font-size: 23px; */
   font-weight: 500;
   color: #206d54;
 }
 .eventDescription {
   font-family: "Segoe UI";
-  font-size: 23px;
+  /* font-size: 23px; */
   font-weight: 400;
   color: #206d54;
 }
 /* #endregion */
 .floatinginput {
   height: 3rem !important;
-  width: 13rem;
+  width: 14rem;
+  min-width: 210px !important;
+}
+.floatinginputMidsize {
+  height: 3rem !important;
+  width: 180px !important;
 }
 .separator {
   height: 0.77rem;
@@ -206,10 +228,13 @@ code {
   border-color: #3c069b;
 }
 .confirmModalbody {
-  height: 3rem;
+  height: 4rem;
 }
 .modalbody {
   height: 20rem;
+}
+.modalButtons {
+  height: 5rem;
 }
 /*#endRegion */
 /* #region ui form component*/
@@ -217,6 +242,7 @@ code {
   width: 210px;
   color: #75706f;
   min-width: 210px !important;
+  height: 3rem !important;
   /* border:1px solid #206d54; */
   /* border-color: #206d54; */
 }
@@ -229,3 +255,23 @@ code {
   margin-top: 0;
 }
 /*#endRegion */
+.roundedDate {
+  font-size: 1.2rem !important;
+}
+.H2rem {
+  height: 5rem;
+}
+.colorizePurple {
+  background-color: #f7f3fd;
+  border: 1px solid #dddddd;
+}
+.tabwaidth {
+  width: 31%;
+  margin-right: 1%;
+  margin-left: 1%;
+}
+.accordinwaidth {
+  width: 95%;
+  margin-right: 1%;
+  margin-left: 1%;
+}
