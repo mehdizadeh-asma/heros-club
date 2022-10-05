@@ -1,6 +1,6 @@
 import React from "react";
 
-const StatusArchive: { Status: string; Style: string }[] = [
+export const StatusList: { Status: string; Style: string }[] = [
   { Status: "Active", Style: "text-success" },
   { Status: "Deactive", Style: "text-secondary" },
   { Status: "Running", Style: "text-warning" },
@@ -13,7 +13,7 @@ interface PropsType {
 }
 
 const StatusView = (props: PropsType) => {
-  const first = StatusArchive.find((obj) => {
+  const first = StatusList.find((obj) => {
     return obj.Status === props.Status;
   });
   return <h6 className={first?.Style}>{props.Status}</h6>;

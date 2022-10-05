@@ -6,18 +6,18 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import StatusView from "../Form/StatusView";
 
 interface PropsType {
-  editClick: (id: string) => void;
-  deleteClick: (id: string) => void;
-  status: string;
-  id: string;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  Status: string;
+  Id: string;
 }
 const StatusAndCrud = (props: PropsType) => {
   function editClickHandler(id: string) {
-    props.editClick(id);
+    props.onEdit(id);
   }
 
   function deleteClickHandler(id: string) {
-    props.deleteClick(id);
+    props.onDelete(id);
   }
 
   return (
@@ -25,19 +25,19 @@ const StatusAndCrud = (props: PropsType) => {
       <div className="col-2">
         <FontAwesomeIcon
           className="iconawesomeSimple text-info "
-          onClick={editClickHandler.bind(this, props.id)}
+          onClick={editClickHandler.bind(null, props.Id)}
           icon={faEdit}
         />
       </div>
       <div className="col-2">
         <FontAwesomeIcon
           className="iconawesomeSimple iconawesomeTrash text-danger "
-          onClick={deleteClickHandler.bind(null, props.id)}
+          onClick={deleteClickHandler.bind(null, props.Id)}
           icon={faTrash}
         />
       </div>
-      <div className="d-flex justify-content-center col-8 pt-1">
-        <StatusView Status={props.status} />
+      <div className="d-flex justify-content-end col-8 pt-1  ">
+        <StatusView Status={props.Status} />
       </div>
     </div>
   );
