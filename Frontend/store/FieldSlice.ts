@@ -1,30 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Field from "../models/Field";
 
-export type StateType = { items: Field[] };
-
-const initialState: StateType = { items: [] };
+const initialState: Field[] = [];
 
 const fieldSlice = createSlice({
   name: "FieldSlice",
   initialState: initialState,
   reducers: {
-    AddField(state: StateType, action: PayloadAction<Field>) {
-      state.items.push(action.payload);
+    AddField(state: Field[], action: PayloadAction<Field>) {
+      state.push(action.payload);
     },
 
-    SetFieldList(state: StateType, action: PayloadAction<StateType>) {
-      return { ...state, items: action.payload.items };
+    SetFieldList(_state: Field[], action: PayloadAction<Field[]>) {
+      return [...action.payload];
     },
 
-    RemoveField(state: StateType, action: PayloadAction<string>) {
-      const list = state.items.filter((field) => field._id !== action.payload);
-      return { ...state, items: list };
+    RemoveField(state: Field[], action: PayloadAction<string>) {
+      const list = state.filter((field) => field._id !== action.payload);
+      return [...list];
     },
 
-    EditField(state: StateType, action: PayloadAction<Field>) {
-      const index = state.items.findIndex((field) => field._id === action.payload._id);
-      state.items[index] = action.payload;
+    EditField(state: Field[], action: PayloadAction<Field>) {
+      const index = state.findIndex((field) => field._id === action.payload._id);
+      state[index] = action.payload;
     },
   },
 });

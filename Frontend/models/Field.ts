@@ -12,7 +12,7 @@ export enum StatusType {
 class Field {
   constructor(
     public _id: string,
-    public Title?: string,
+    public Title: string,
     public ImageUrl?: string,
     public Status?: StatusType
   ) {}
@@ -23,11 +23,11 @@ class Field {
       method: "GET",
     });
 
-    return store.dispatch(FieldActions.SetFieldList({ items: response.data }));
+    return store.dispatch(FieldActions.SetFieldList(response.data));
   }
 
   public static GetByID(id: string): Field | undefined {
-    const fieldList = store.getState().items;
+    const fieldList = store.getState().Fields;
 
     const field = fieldList.find((field) => field._id === id);
 
