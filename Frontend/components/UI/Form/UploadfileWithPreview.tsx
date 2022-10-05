@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useImperativeHandle, useState } from "react";
 
 import Image from "react-bootstrap/Image";
 import Resizer from "react-image-file-resizer";
 import { Form } from "react-bootstrap";
 
 interface PropsType {
-  onUpload: (imageurl: string | undefined, uploadedFile: FormData) => void;
   folderName: string;
+  Required?: boolean;
+  onUpload: (imageurl: string | undefined, uploadedFile: FormData) => void;
 }
+
+interface ForwardRefHandle {
+  SetImage: (imageUrl: string | undefined) => void;
+  GetImage: () => string | undefined;
+}
+
 // #region Resizer
 const resizeFile = (file: Blob) =>
   new Promise<string>((resolve) => {
@@ -38,8 +45,13 @@ const dataURIToBlob = (dataURI: string) => {
 
 export const defaultAvatar = "/assets/images/default-avatar.png";
 
-const UploadfileWithPreview = React.forwardRef<HTMLImageElement, PropsType>((props, ref) => {
+const UploadfileWithPreview = React.forwardRef<ForwardRefHandle, PropsType>((props, ref) => {
   const [ImagePreview, setImagePreview] = useState<string | undefined>(undefined);
+
+  useImperativeHandle(ref, () => ({
+    SetImage: (imageUrl: string | undefined) => setImagePreview(imageUrl),
+    GetImage: () => ImagePreview,
+  }));
 
   // console.log("UploadFile Loaded...");
 
@@ -61,24 +73,35 @@ const UploadfileWithPreview = React.forwardRef<HTMLImageElement, PropsType>((pro
   }
 
   return (
-    <div className="d-flex flex-column text-center  ">
-      <div>
-        <Image
-          className="img-fluid shadow border-secondary"
-          src={ImagePreview ?? defaultAvatar}
-          height="100px"
-          width="100px"
-          alt="default"
-          rounded
-          ref={ref}
-        />
+    <Form.Group controlId="validationCustom01">
+      <div className="d-flex flex-column text-center  ">
+        <div>
+          <Image
+            className="img-fluid shadow border-secondary"
+            src={ImagePreview ?? defaultAvatar}
+            height="100px"
+            width="100px"
+            alt="default"
+            rounded
+          />
+        </div>
+        <div>
+          <div className="row d-flex flex-column position-relative">
+            <div className="col">
+              <Form.Control
+                Type="file"
+                onChange={uploadHandler}
+                className="shadow text-info mt-1 "
+                Required={!props.Required && ImagePreview ? false : true}
+              />
+              <Form.Control.Feedback tooltip type="invalid" className="">
+                Please Provide A JPEG Image
+              </Form.Control.Feedback>
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
-        <Form.Group>
-          <Form.Control type="file" onChange={uploadHandler} className="shadow text-info mt-1 " />
-        </Form.Group>
-      </div>
-    </div>
+    </Form.Group>
   );
 });
 
