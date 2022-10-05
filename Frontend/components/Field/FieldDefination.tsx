@@ -6,12 +6,12 @@ import NewField from "./NewField";
 import FieldCard from "./FieldCard";
 import MultiCarousel from "../UI/Carousel/MultiCarousel";
 
-import { StateType } from "store/FieldSlice";
+import { StoreType } from "store";
 import Field, { StatusType } from "models/Field";
 import Helper from "utils/Helper";
 
 const FieldDefination: React.FC = () => {
-  const fieldList = useSelector((state: StateType) => state.items);
+  const fieldList = useSelector((state: StoreType) => state.Fields);
   const [fieldToEdit, setFieldToEdit] = useState<Field | undefined>(undefined);
 
   // console.log("FieldDefination Loaded...");
@@ -70,19 +70,21 @@ const FieldDefination: React.FC = () => {
       </div>
       <div className="col-5 d-inline-flex  justify-content-center position-relative "></div>
       <div>
-        <MultiCarousel>
-          {fieldList.map((item) => (
-            <FieldCard
-              key={item._id}
-              Id={item._id}
-              Title={item.Title as string}
-              ImageUrl={item.ImageUrl as string}
-              Status={item.Status as StatusType}
-              onShowField={ShowFieldHandler}
-              onDelete={DeleteFieldHandler}
-            />
-          ))}
-        </MultiCarousel>
+        {fieldList && (
+          <MultiCarousel>
+            {fieldList.map((item) => (
+              <FieldCard
+                key={item._id}
+                Id={item._id}
+                Title={item.Title as string}
+                ImageUrl={item.ImageUrl as string}
+                Status={item.Status as StatusType}
+                onShowField={ShowFieldHandler}
+                onDelete={DeleteFieldHandler}
+              />
+            ))}
+          </MultiCarousel>
+        )}
       </div>
     </div>
   );
