@@ -17,10 +17,14 @@ interface PropsType {
 }
 
 const NewField: React.FC<PropsType> = (props) => {
+  type UploadfileWithPreviewHandle = React.ElementRef<typeof UploadfileWithPreview>;
+
+  const [validated, setValidated] = useState(false);
   const refIDHidden = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>;
   const refTitleInput = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>;
   const refAddButton = useRef<HTMLButtonElement>() as MutableRefObject<HTMLButtonElement>;
-  const refFieldImage = useRef<HTMLImageElement>() as MutableRefObject<HTMLImageElement>;
+  const refFieldImage =
+    useRef<UploadfileWithPreviewHandle>() as MutableRefObject<UploadfileWithPreviewHandle>;
   const refFieldStatus = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>;
 
   const [fileUploaded, setFileUploaded] = useState<FormData | undefined>(undefined);
@@ -36,16 +40,23 @@ const NewField: React.FC<PropsType> = (props) => {
     if (refIDHidden.current) refIDHidden.current.value = editedfield._id;
     if (editedfield.Title) refTitleInput.current.value = editedfield.Title;
     if (editedfield.Status)
-      refFieldStatus.current.checked = editedfield.Status == StatusType.Active;
-    if (editedfield.ImageUrl) refFieldImage.current.src = editedfield.ImageUrl;
+      refFieldStatus.current.checked = editedfield.Status === StatusType.Active;
+    if (editedfield.ImageUrl) refFieldImage.current.SetImage(editedfield.ImageUrl);
 
     refAddButton.current.textContent = "Save Field";
   }
 
-  async function submitHandler(event: React.FormEvent) {
+  async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setValidated(true);
 
-    const enteredTitle = refTitleInput.current.value;
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      event.stopPropagation();
+      return;
+    }
+
+    const enteredTitle = refTitleInput.current.value.toUpperCase();
     const fieldStatus = refFieldStatus.current.checked ? StatusType.Active : StatusType.Deactive;
 
     if (refAddButton.current.textContent === "Add Field") {
@@ -56,7 +67,7 @@ const NewField: React.FC<PropsType> = (props) => {
       const Oldfield = props.ForEdit as Field;
 
       const fieldId = refIDHidden.current.value;
-      const imageUrl = uploadImageUrl ?? refFieldImage.current.src;
+      const imageUrl = uploadImageUrl ?? refFieldImage.current.GetImage();
 
       const editedField = new Field(fieldId, enteredTitle, imageUrl, fieldStatus);
 
@@ -72,10 +83,11 @@ const NewField: React.FC<PropsType> = (props) => {
     refTitleInput.current.value = "";
 
     refFieldStatus.current.checked = true;
-    refFieldImage.current.src = defaultAvatar;
+    refFieldImage.current.SetImage(defaultAvatar);
 
     setUploadImageUrl(undefined);
     setFileUploaded(undefined);
+    setValidated(false);
     refAddButton.current.textContent = "Add Field";
     props.onClear();
   }
@@ -86,7 +98,7 @@ const NewField: React.FC<PropsType> = (props) => {
   }
 
   return (
-    <form onSubmit={submitHandler}>
+    <Form onSubmit={submitHandler} noValidate validated={validated}>
       <input type="hidden" ref={refIDHidden} />
       <div className="row d-inline-flex w-100   py-3 shadow border rounded-4  bg-white  ">
         <div className="d-flex flex-column text-center col-lg-6  ">
@@ -94,6 +106,7 @@ const NewField: React.FC<PropsType> = (props) => {
             onUpload={UploadfileChangeHandler}
             folderName={folderName}
             ref={refFieldImage}
+            Required={true}
           />
         </div>
         <div className="col-lg-4  d-flex flex-column position-relative  justify-content-start">
@@ -107,32 +120,34 @@ const NewField: React.FC<PropsType> = (props) => {
           />
           <div className="row d-flex position-absolute bottom-0 ">
             <FloatingInput
-              type="text"
-              placeholder="FieldTitle"
+              Title="Field Title"
+              Type="text"
               ref={refTitleInput}
-              title="Field Title"
-              className="text-info "
+              LabelClassName="text-info"
+              InputClassName="floatinginput text-uppercase"
+              Required={true}
+              ValidationMessage="Please Provide A Title"
             />
           </div>
         </div>
         <div className="col-lg-2 position-relative ">
           <SubmitButton
-            className=" text-info border-info bottom-0 rounded-3  start-0 py-2  componentbtn"
-            buttonTitle="Add Field"
-            type="submit"
+            ClassName=" text-info border-info bottom-0 rounded-3  start-0 py-2  componentbtn"
+            Title="Add Field"
+            Type="submit"
             ref={refAddButton}
           />
           <SubmitButton
-            className="border-info rounded-circle top-0 py-1 px-1 end-0 mx-3 "
-            buttonTitle=""
-            type="button"
+            ClassName="border-info rounded-circle top-0 py-1 px-1 end-0 mx-3 "
+            Title=""
+            Type="button"
             onClick={ClearField}
-            icon={faEraser}
-            iconClass=" roundImgBtn text-info border-info border-5 w-75"
+            Icon={faEraser}
+            IconClass=" roundImgBtn text-info border-info border-5 w-75"
           />
         </div>
       </div>
-    </form>
+    </Form>
   );
 };
 
