@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useRef } from "react";
 import Card from "react-bootstrap/card";
 import Image from "react-bootstrap/Image";
 
-import Helper from "utils/Helper";
-import { StatusType } from "models/Field";
-
 import StatusAndCrud from "../UI/Form/StatusAndCrud";
 import ConfirmModal from "../UI/Form/ConfirmModal";
+
+import Helper from "utils/Helper";
+import { StatusType } from "models/Field";
 
 interface PropsType {
   Id: string;
@@ -17,23 +17,25 @@ interface PropsType {
   onShowField: (id: string) => void;
 }
 const FieldCard: React.FC<PropsType> = (props) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  type ConfirmModalHandle = React.ElementRef<typeof ConfirmModal>;
+  const refConfirmModal = useRef<ConfirmModalHandle>(null);
   // console.log("Field Card Loaded....");
 
   function deleteClickHandler() {
-    setShowModal(true);
+    refConfirmModal.current?.Show();
   }
   function editClickHandler() {
     props.onShowField(props.Id);
   }
 
   function YesClickHandler() {
-    setShowModal(false);
+    refConfirmModal.current?.Hide();
+
     props.onDelete(props.Id);
     Helper.DeleteFile(props.ImageUrl);
   }
   function NoClickHandler() {
-    setShowModal(false);
+    refConfirmModal.current?.Hide();
   }
 
   return (
@@ -49,18 +51,18 @@ const FieldCard: React.FC<PropsType> = (props) => {
       </div>
       <div className="row">
         <StatusAndCrud
-          editClick={editClickHandler}
-          deleteClick={deleteClickHandler}
-          status={props.Status}
-          id={props.Id}
+          onEdit={editClickHandler}
+          onDelete={deleteClickHandler}
+          Status={props.Status}
+          Id={props.Id}
         />
       </div>
       <ConfirmModal
-        ShowModal={showModal}
         Title="Delete Confirmation"
         Message="Are You Sure You Want To Delete This Item?"
         onYesClick={YesClickHandler}
         onNoClick={NoClickHandler}
+        ref={refConfirmModal}
       />
     </Card>
   );
