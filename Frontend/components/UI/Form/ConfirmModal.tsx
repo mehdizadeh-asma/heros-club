@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useImperativeHandle, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,14 +9,26 @@ import SubmitButton from "../Form/SubmitButton";
 interface PropsType {
   Title: string;
   Message: string;
-  ShowModal: boolean;
   onYesClick: () => void;
   onNoClick: () => void;
 }
-const ConfirmModal = (props: PropsType) => {
+
+interface ForwardRefHandle {
+  Show: () => void;
+  Hide: () => void;
+}
+
+const ConfirmModal = React.forwardRef<ForwardRefHandle, PropsType>((props, ref) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  useImperativeHandle(ref, () => ({
+    Show: () => setShowModal(true),
+    Hide: () => setShowModal(false),
+  }));
+
   return (
     <div className="row">
-      <Modal show={props.ShowModal}>
+      <Modal show={showModal}>
         <div className="row d-flex flex-column border border-1  rounded-4 shadow bg-white">
           <div className="row  d-inline-flex  w-100 justify-content-center position-relative ">
             <div className="mx-2 position-absolute translate-middle top-0 start-50  h-75">
@@ -34,17 +46,17 @@ const ConfirmModal = (props: PropsType) => {
           <div className="row d-inline-flex  justify-content-center mx-5 py-1 my-1 w-100 confirmModalbody">
             <div className="col-3">
               <SubmitButton
-                className=" text-white border-success bg-success  rounded-3 px-3  py-1  componentbtn"
-                buttonTitle="YES"
-                type="button"
+                ClassName=" text-white border-success bg-success  rounded-3 px-3  py-1  componentbtn"
+                Title="Yes"
+                Type="button"
                 onClick={props.onYesClick}
               />
             </div>
             <div className="col-4">
               <SubmitButton
-                className="border-danger text-white bg-danger rounded-3  px-3  py-1   componentbtn   "
-                buttonTitle="NO"
-                type="button"
+                ClassName="border-danger text-white bg-danger rounded-3  px-3  py-1   componentbtn   "
+                Title="No"
+                Type="button"
                 onClick={props.onNoClick}
               />
             </div>
@@ -53,5 +65,8 @@ const ConfirmModal = (props: PropsType) => {
       </Modal>
     </div>
   );
-};
+});
+
+ConfirmModal.displayName = "ConfirmModal";
+
 export default ConfirmModal;
