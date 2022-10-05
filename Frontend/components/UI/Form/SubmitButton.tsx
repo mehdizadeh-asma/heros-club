@@ -3,25 +3,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 interface PropsType {
-  className: string;
-  buttonTitle: string;
-  type: "reset" | "button" | "submit";
+  Title: string;
+  Type: "reset" | "button" | "submit";
+  ClassName?: string;
+  Icon?: IconDefinition;
+  IconClass?: string;
   onClick?: () => void;
-  icon?: IconDefinition;
-  iconClass?: string;
 }
 const SubmitButton = React.forwardRef<HTMLButtonElement, PropsType>((props, ref) => {
   return (
     <button
-      type={props.type}
+      type={props.Type}
       ref={ref}
-      className={"border border-2 position-absolute shadow-sm componentbtn " + props.className}
+      className={"border border-2 position-absolute shadow-sm componentbtn " + props.ClassName}
       onClick={props.onClick}
     >
-      {props.icon ? (
-        <FontAwesomeIcon className={props.iconClass} icon={props.icon} />
+      {props.Icon ? (
+        <FontAwesomeIcon className={props.IconClass} icon={props.Icon} />
       ) : (
-        <h6>{props.buttonTitle}</h6>
+        <h6>{props.Title}</h6>
       )}
     </button>
   );
