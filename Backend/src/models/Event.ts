@@ -6,21 +6,22 @@ const schema = new mongoose.Schema({
   Field: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Field",
-    require: [true, "Field Document is required"],
+    // require: [true, "Field Document is required"],
   },
 
-  Date: { type: Date, require: [true, "Date is required"] },
+  EventDate: { type: Date, require: [true, "Date is required"] },
 
   Place: {
     Type: {
       type: String,
       enum: ["Point"],
-      required: [true, "Place.Type is required"],
+      // required: [true, "Place.Type is required"],
     },
     Coordinates: {
       type: [Number],
-      required: [true, "Place.Coordinates is required"],
+      // required: [true, "Place.Coordinates is required"],
     },
+    // required: [true, "Place is required"],
   },
 
   Address: { type: String, require: [true, "Address is required"] },
@@ -29,8 +30,17 @@ const schema = new mongoose.Schema({
 
   Status: {
     type: String,
-    enum: ["Free", "Paid"],
-    default: "Free",
+    enum: {
+      values: ["Active", "Deactive", "Running", "Waiting", "Done"],
+      message: "{VALUE} is not supported",
+    },
+    default: "Active",
+  },
+
+  PaymentType: {
+    type: String,
+    enum: ["FREE", "Cost"],
+    default: "FREE",
   },
 
   Cost: { type: Number },

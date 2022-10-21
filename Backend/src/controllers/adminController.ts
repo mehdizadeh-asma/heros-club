@@ -87,27 +87,40 @@ class adminController {
   //#region Event CRUD
   static postEvent: RequestHandler = async (req, res, next) => {
     try {
-      const { Title, Date, Place, Address, ImageUrl, Status, Cost } = req.body as {
-        Title: string;
-        Date: Date;
-        Place: Geolocation;
-        Address: string;
-        ImageUrl: string | undefined;
-        Status: string;
-        Cost: number | undefined;
-      };
+      const { Title, EventDate, Address, ImageUrl, Status, PaymentType, Cost, FieldId } =
+        req.body as {
+          Title: string;
+          EventDate: Date;
+          Address: string;
+          ImageUrl: string | undefined;
+          Status: string;
+          PaymentType: string;
+          Cost: number | undefined;
+          FieldId: string | undefined;
+          // Place: typeof Event.prototype.Place | undefined;
+        };
 
-      const field = Field.hydrate(req.body.Field);
+      // const error = field.validateSync();
 
-      const error = field.validateSync();
+      // if (error) throw new Error(error.message);
 
-      if (error) throw new Error(error.message);
-
-      const event = new Event({ Title, field, Date, Place, Address, ImageUrl, Status, Cost });
+      const event = new Event({
+        Title,
+        EventDate,
+        Address,
+        ImageUrl,
+        Status,
+        PaymentType,
+        Cost,
+        Field: new Types.ObjectId(FieldId),
+        // Place,
+      });
 
       await event.save();
 
-      res.status(201).json(event);
+      const result = await Event.findById(event._id).populate("Field");
+
+      res.status(201).json(result);
     } catch (error) {
       next(error);
     }
@@ -115,7 +128,7 @@ class adminController {
 
   static getEvents: RequestHandler = async (req, res, next) => {
     try {
-      const events = await Event.find();
+      const events = await Event.find().populate("Field");
 
       res.status(200).json(events);
     } catch (error) {
@@ -141,13 +154,14 @@ class adminController {
     try {
       const id: string = req.params.id;
 
-      const { Title, Date, Place, Address, ImageUrl, Status, Cost } = req.body as {
+      const { Title, Date, Place, Address, ImageUrl, Status, PaymentType, Cost } = req.body as {
         Title: string;
         Date: Date;
         Place: Geolocation;
         Address: string;
         ImageUrl: string | undefined;
         Status: string;
+        PaymentType: string;
         Cost: number | undefined;
       };
 
@@ -166,6 +180,7 @@ class adminController {
         Address,
         ImageUrl,
         Status,
+        PaymentType,
         Cost,
       });
 
@@ -175,7 +190,7 @@ class adminController {
 
       await Event.updateOne(
         { _id: id },
-        { Title, field, Date, Place, Address, ImageUrl, Status, Cost }
+        { Title, field, Date, Place, Address, ImageUrl, Status, PaymentType, Cost }
       );
       res.status(200).json(event);
     } catch (error) {
