@@ -1,3 +1,3 @@
-test("Should Be True ", async function () {
+test("Should Be True ", function () {
   expect(true).toEqual(true);
 });
