@@ -44,7 +44,7 @@ describe("Create Person", () => {
   //   });
   // });
 
-  test("Should Be Create Person ", async function () {
+  test("Should Be Create Person ", function () {
     expect(true).toEqual(true);
     // mockRequest = {
     //   body: { FirstName: "Ali", LastName: "Mohammadi" },
