@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { Types } from "mongoose";
 
 import Field from "../models/Field";
@@ -6,7 +6,7 @@ import Event from "../models/Event";
 
 class adminController {
   //#region Field CRUD
-  static postField: RequestHandler = async (req, res, next) => {
+  static postField = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { Title, ImageUrl, Status } = req.body as {
         Title: string | undefined;
@@ -15,6 +15,8 @@ class adminController {
       };
 
       const field = new Field({ Title, ImageUrl, Status });
+
+      await field.validate();
 
       await field.save();
 
